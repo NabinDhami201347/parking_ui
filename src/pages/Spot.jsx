@@ -3,6 +3,7 @@ import { useParams } from "react-router-dom";
 
 import { privateAxios } from "../api";
 import Loading from "../components/Loading";
+import ParkingPlaceDetails from "../components/ParkingPlaceDetails";
 
 const Spots = () => {
   const { id } = useParams();
@@ -26,7 +27,13 @@ const Spots = () => {
     return <span>Error: {error.message}</span>;
   }
 
-  return <div>{spot.name}</div>;
+  return (
+    <div className="w-11/12 mx-auto my-10">
+      <ParkingPlaceDetails spot={spot} />
+
+      {/* <ReservationForm /> */}
+    </div>
+  );
 };
 
 export default Spots;

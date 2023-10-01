@@ -9,15 +9,15 @@ import Loading from "../components/Loading";
 const Vehicles = () => {
   const fetchVehicle = async () => {
     try {
-      const res = await privateAxios.get(`/vehicles/user`);
+      const res = await privateAxios.get(`vehicles/u/p`);
       console.log(res);
-      return res.data.vehicle;
+      return res.data.vehicles;
     } catch (error) {
       console.log("error while fetching vehicles", error);
     }
   };
 
-  const { data: vehicle, isLoading, isError, error } = useQuery(["vehicle"], fetchVehicle);
+  const { data: vehicles, isLoading, isError, error } = useQuery(["vehicles"], fetchVehicle);
 
   if (isLoading) {
     return <Loading />;
@@ -27,14 +27,13 @@ const Vehicles = () => {
     return <span>Error: {error.message}</span>;
   }
 
-  console.log(vehicle, "vehicle");
+  console.log(vehicles, "vehicle");
   return (
     <div className="w-11/12 mx-auto my-6">
       <div className="grid sm:grid-cols-4 gap-10 ">
-        <Vehicle model="Toyota" licensePlate="MAP 77" vehicleType="car" />
-        <Vehicle model="Toyota" licensePlate="MAP 77" vehicleType="bike" />
-        <Vehicle model="Toyota" licensePlate="MAP 77" vehicleType="car" />
-        <Vehicle model="Toyota" licensePlate="MAP 77" vehicleType="car" />
+        {vehicles.map((v) => (
+          <Vehicle key={v._id} model={v.model} licensePlate={v.licensePlate} vehicleType={v.vehicleType} />
+        ))}
       </div>
 
       <div className="my-10">

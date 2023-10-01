@@ -7,7 +7,7 @@ const Navbar = () => {
   const isLoggedIn = accessToken ? true : false;
 
   return (
-    <header className="fixed top-0 w-full  border-b border-gray-600 h-16">
+    <header className="fixed top-0 w-full backdrop-blur-sm  border-b border-gray-600 h-16">
       <nav className="w-11/12 mx-auto h-full flex items-center">
         <div className="w-full flex items-center justify-between">
           <div className="">Pay Per Vue</div>

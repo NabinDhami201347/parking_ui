@@ -1,7 +1,8 @@
 import { useQuery } from "@tanstack/react-query";
-import { Link } from "react-router-dom";
+
 import { privateAxios } from "../api";
 import Loading from "../components/Loading";
+import ParkingSpotCard from "../components/ParkingSpotCard";
 
 const Spots = () => {
   const fetchSpots = async () => {
@@ -25,16 +26,8 @@ const Spots = () => {
   }
 
   return (
-    <div>
-      {spots ? (
-        spots.map((s) => (
-          <p key={s._id}>
-            <Link to={`/spots/${s._id}`}>{s.name}</Link>
-          </p>
-        ))
-      ) : (
-        <p>No spots available.</p>
-      )}
+    <div className="grid md:grid-cols-3 w-11/12 mx-auto gap-6 my-10">
+      {spots ? spots.map((s) => <ParkingSpotCard key={s._id} spot={s} />) : <p>No spots available.</p>}
     </div>
   );
 };
