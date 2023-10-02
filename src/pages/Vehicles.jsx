@@ -5,12 +5,12 @@ import { FaCarSide } from "react-icons/fa";
 import { privateAxios } from "../api";
 import Loading from "../components/Loading";
 import VehicleRegisterModal from "../components/modals/VehicleRegisterModal";
+import DeleteVehicleModal from "../components/modals/DeleteVehicleModal";
 
 const Vehicles = () => {
   const fetchVehicle = async () => {
     try {
       const res = await privateAxios.get(`vehicles/u/p`);
-      console.log(res);
       return res.data.vehicles;
     } catch (error) {
       console.log("error while fetching vehicles", error);
@@ -31,7 +31,7 @@ const Vehicles = () => {
     <div className="w-11/12 mx-auto my-6">
       <div className="grid sm:grid-cols-4 gap-10 ">
         {vehicles.map((v) => (
-          <Vehicle key={v._id} model={v.model} licensePlate={v.licensePlate} vehicleType={v.vehicleType} />
+          <Vehicle key={v._id} id={v._id} model={v.model} licensePlate={v.licensePlate} vehicleType={v.vehicleType} />
         ))}
       </div>
 
@@ -41,17 +41,18 @@ const Vehicles = () => {
 };
 
 // eslint-disable-next-line react/prop-types
-function Vehicle({ model, licensePlate, vehicleType }) {
+function Vehicle({ model, licensePlate, vehicleType, id }) {
   const IconMap = {
     car: <FaCarSide className="h-20 w-20" />,
     bike: <RiMotorbikeFill className="h-20 w-20" />,
   };
 
   return (
-    <div className="p-1 border px-4 border-purple-600 rounded-md cursor-pointer hover:border-purple-400 transition-all">
+    <div className="relative p-1 border px-4 overflow-hidden border-purple-600 rounded-md cursor-pointer hover:border-purple-400 transition-all">
       {IconMap[vehicleType]}
       <h2 className="text-xl text-gray-300">{model}</h2>
       <p className="text-base text-gray-500">{licensePlate}</p>
+      <DeleteVehicleModal id={id} />
     </div>
   );
 }

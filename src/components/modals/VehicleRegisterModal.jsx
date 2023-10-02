@@ -49,12 +49,13 @@ const VehicleRegisterModal = () => {
       return privateAxios.post("/vehicles", data);
     },
     onSuccess: () => {
-      toast.success("Vehicle registered successfully");
       closeModal();
+      toast.success("Vehicle registered successfully");
       queryClient.invalidateQueries("vehicles");
     },
     onError: (err) => {
-      toast.error("Error while registering");
+      closeModal();
+      toast.error(err.response.data.error);
       console.log("error while creating vehicle", err);
     },
   });
@@ -132,16 +133,6 @@ const VehicleRegisterModal = () => {
                       Create Vehicle
                     </button>
                   </form>
-
-                  {/* <div className="mt-4">
-                    <button
-                      type="button"
-                      className="inline-flex justify-center rounded-md border border-transparent bg-blue-100 px-4 py-2 text-sm font-medium text-blue-900 hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
-                      onClick={closeModal}
-                    >
-                      Got it, thanks!
-                    </button>
-                  </div> */}
                 </Dialog.Panel>
               </Transition.Child>
             </div>

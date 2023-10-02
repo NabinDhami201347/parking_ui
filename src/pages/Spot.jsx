@@ -30,8 +30,6 @@ const Spots = () => {
   return (
     <div className="w-11/12 mx-auto my-10">
       <ParkingPlaceDetails spot={spot} />
-
-      {/* <ReservationForm /> */}
     </div>
   );
 };

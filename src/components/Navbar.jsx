@@ -28,14 +28,14 @@ const Navbar = () => {
                 </Link>
                 <button
                   onClick={() => deleteAccessToken()}
-                  className="hover:bg-red-700 transition px-4 py-1 bg-red-600 rounded-full"
+                  className="bg-zinc-700 px-4 py-1 hover:bg-zinc-800 rounded-md"
                 >
                   Sign out
                 </button>
               </>
             ) : (
               <Link to="/signup">
-                <li className="hover:bg-green-700 transition px-4 py-1 bg-green-600 rounded-full">Signup</li>
+                <li className="hover:bg-zinc-700 transition px-4 py-1 bg-zinc-600 rounded-md">Signup</li>
               </Link>
             )}
           </ul>

@@ -1,12 +1,14 @@
+/* eslint-disable react/prop-types */
 import { Dialog, Transition } from "@headlessui/react";
 import { Fragment, useState } from "react";
 import Select from "react-select";
 import DatePicker from "react-datepicker";
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation } from "@tanstack/react-query";
 import "react-datepicker/dist/react-datepicker.css";
 import { privateAxios } from "../../api";
 import Loading from "../Loading";
 import toast from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
 
 const dialogTransitionConfig = {
   enter: "ease-out duration-300",
@@ -27,7 +29,8 @@ const overlayTransitionConfig = {
 };
 
 // eslint-disable-next-line react/prop-types
-const ReservationModal = ({ id }) => {
+const ReservationModal = ({ id, vehicles }) => {
+  const navigate = useNavigate();
   const [isOpen, setIsOpen] = useState(false);
   const closeModal = () => setIsOpen(false);
   const openModal = () => setIsOpen(true);
@@ -39,17 +42,6 @@ const ReservationModal = ({ id }) => {
     endTime: null,
     arrivalTime: null,
   });
-
-  const fetchVehicle = async () => {
-    try {
-      const res = await privateAxios.get(`vehicles/u/p`);
-      return res.data.vehicles;
-    } catch (error) {
-      console.log("error while fetching vehicles", error);
-    }
-  };
-
-  const { data: vehicles, isLoading, isError, error } = useQuery(["vehicles"], fetchVehicle);
 
   const handleDateChange = (date, field) => {
     setFormData({
@@ -65,17 +57,14 @@ const ReservationModal = ({ id }) => {
     });
   };
 
-  const {
-    isLoading: isMutateLoading,
-    error: mutateError,
-    mutate,
-  } = useMutation({
+  const { isLoading, isError, error, mutate } = useMutation({
     mutationFn: (data) => {
       return privateAxios.post("/reservations", data);
     },
     onSuccess: () => {
-      toast.success("Reservation Successful");
       closeModal();
+      toast.success("Reservation Successful");
+      navigate("/profile");
     },
     onError: (err) => {
       toast.err("Error while reservation");
@@ -96,22 +85,21 @@ const ReservationModal = ({ id }) => {
     }));
   }
 
-  if (isLoading || isMutateLoading) {
+  if (isLoading) {
     return <Loading />;
   }
 
   if (isError) {
     return <span>Error: {error.message}</span>;
   }
-  if (mutateError) {
-    return <span>Error: {mutateError.message}</span>;
-  }
+
   return (
     <>
       <button
         type="button"
         onClick={openModal}
-        className="w-full bg-green-600 py-2 hover:bg-green-700 transition-all ease-in-out rounded-md"
+        disabled={isLoading || vehicles.length < 1}
+        className="w-full bg-green-600 py-2 hover:bg-green-700 transition-all ease-in-out rounded-md disabled:bg-gray-400"
       >
         Reserve Parking
       </button>
@@ -176,7 +164,7 @@ const ReservationModal = ({ id }) => {
                       className="w-full p-2 border bg-transparent rounded-sm"
                     />
                     <button
-                      disabled={isLoading || isMutateLoading}
+                      disabled={isLoading}
                       type="submit"
                       className="px-4 py-2 border border-transparent bg-purple-600  text-sm font-medium  hover:bg-purple-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
                     >

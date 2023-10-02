@@ -1,11 +1,33 @@
 /* eslint-disable react/prop-types */
 
-import { FaCreativeCommonsRemix, FaDollarSign, FaSpaceShuttle } from "react-icons/fa";
+import { FaCreativeCommonsRemix, FaDollarSign, FaHammer, FaSpaceShuttle } from "react-icons/fa";
 import Card from "./Card";
 import mock from "/mock.jpg";
 import ReservationModal from "./modals/ReservationModal";
+import { useQuery } from "@tanstack/react-query";
+import { privateAxios } from "../api";
+import Loading from "./Loading";
 
 const ParkingPlaceDetails = ({ spot }) => {
+  const fetchVehicle = async () => {
+    try {
+      const res = await privateAxios.get(`vehicles/u/p`);
+      return res.data.vehicles;
+    } catch (error) {
+      console.log("error while fetching vehicles", error);
+    }
+  };
+
+  const { data: vehicles, isLoading, isError, error } = useQuery(["vehicles"], fetchVehicle);
+
+  if (isLoading) {
+    return <Loading />;
+  }
+
+  if (isError) {
+    return <span>Error: {error.message}</span>;
+  }
+
   return (
     <div className="w-full overflow-hidden space-y-6">
       {spot.available ? (
@@ -17,6 +39,13 @@ const ParkingPlaceDetails = ({ spot }) => {
         <div className="flex items-center gap-4 px-4 py-2 bg-red-600">
           <FaSpaceShuttle className="h-8 w-8" />
           <p className="text-xl text-white rounded-sm">Unavaliable</p>
+        </div>
+      )}
+
+      {vehicles.length < 1 && (
+        <div className="flex items-center gap-4 px-4 py-2 bg-yellow-600">
+          <FaHammer className="h-8 w-8" />
+          <p className="text-xl text-white rounded-sm">No vehicles registered yet</p>
         </div>
       )}
 
@@ -60,7 +89,7 @@ const ParkingPlaceDetails = ({ spot }) => {
         </div>
       </div>
 
-      {spot.available && <ReservationModal id={spot._id} />}
+      {spot.available && <ReservationModal id={spot._id} vehicles={vehicles} />}
     </div>
   );
 };
