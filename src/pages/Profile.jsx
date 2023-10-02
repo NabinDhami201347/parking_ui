@@ -2,6 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import { privateAxios } from "../api";
 import Loading from "../components/Loading";
 import { FaCar, FaCreativeCommonsSampling, FaDollarSign } from "react-icons/fa";
+import ReservationsList from "../components/ReservationList";
 
 const Profile = () => {
   const fetchProfile = async () => {
@@ -69,6 +70,9 @@ const Profile = () => {
           </div>
         </div>
       </div>
+
+      {/* Table showing reservations */}
+      <ReservationsList reservations={user.reservations} />
     </div>
   );
 };

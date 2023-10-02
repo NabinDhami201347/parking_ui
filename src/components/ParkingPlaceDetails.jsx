@@ -3,6 +3,7 @@
 import { FaCreativeCommonsRemix, FaDollarSign, FaSpaceShuttle } from "react-icons/fa";
 import Card from "./Card";
 import mock from "/mock.jpg";
+import ReservationModal from "./modals/ReservationModal";
 
 const ParkingPlaceDetails = ({ spot }) => {
   return (
@@ -59,9 +60,7 @@ const ParkingPlaceDetails = ({ spot }) => {
         </div>
       </div>
 
-      <button className="w-full bg-green-600 py-2 hover:bg-green-700 transition-all ease-in-out rounded-md">
-        Create Reservation
-      </button>
+      {spot.available && <ReservationModal id={spot._id} />}
     </div>
   );
 };

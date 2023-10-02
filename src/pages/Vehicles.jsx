@@ -1,10 +1,10 @@
 import { useQuery } from "@tanstack/react-query";
 import { RiMotorbikeFill } from "react-icons/ri";
 import { FaCarSide } from "react-icons/fa";
-import { Link } from "react-router-dom";
 
 import { privateAxios } from "../api";
 import Loading from "../components/Loading";
+import VehicleRegisterModal from "../components/modals/VehicleRegisterModal";
 
 const Vehicles = () => {
   const fetchVehicle = async () => {
@@ -27,7 +27,6 @@ const Vehicles = () => {
     return <span>Error: {error.message}</span>;
   }
 
-  console.log(vehicles, "vehicle");
   return (
     <div className="w-11/12 mx-auto my-6">
       <div className="grid sm:grid-cols-4 gap-10 ">
@@ -36,11 +35,7 @@ const Vehicles = () => {
         ))}
       </div>
 
-      <div className="my-10">
-        <Link to="/vehicles/new" className="px-4 py-2 bg-blue-500">
-          Add Vehicle
-        </Link>
-      </div>
+      <VehicleRegisterModal />
     </div>
   );
 };
