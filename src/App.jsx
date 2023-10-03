@@ -1,4 +1,4 @@
-import { Outlet, Route, Routes } from "react-router-dom";
+import { Navigate, Outlet, Route, Routes } from "react-router-dom";
 
 import Home from "./pages/Home";
 import Signin from "./pages/Signin";
@@ -10,6 +10,9 @@ import Spot from "./pages/Spot";
 import Navbar from "./components/Navbar";
 import CreateVehicleForm from "./components/CreateVehicleForm";
 
+import { useContext } from "react";
+import { TokensContext } from "./hooks/useTokens";
+
 function App() {
   return (
     <Routes>
@@ -17,14 +20,46 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/signin" element={<Signin />} />
         <Route path="/signup" element={<Signup />} />
-        <Route path="/profile" element={<Profile />} />
-        <Route path="/vehicles" element={<Vehicles />} />
-        <Route path="/vehicles/new" element={<CreateVehicleForm />} />
+        <Route
+          path="/profile"
+          element={
+            <RequireAuth>
+              <Profile />
+            </RequireAuth>
+          }
+        />
+        <Route
+          path="/vehicles"
+          element={
+            <RequireAuth>
+              <Vehicles />
+            </RequireAuth>
+          }
+        />
+        <Route
+          path="/vehicles/new"
+          element={
+            <RequireAuth>
+              <CreateVehicleForm />
+            </RequireAuth>
+          }
+        />
         <Route path="/spots" element={<Spots />} />
         <Route path="/spots/:id" element={<Spot />} />
       </Route>
     </Routes>
   );
+}
+
+// eslint-disable-next-line react/prop-types
+function RequireAuth({ children }) {
+  const { accessToken } = useContext(TokensContext);
+
+  if (!accessToken) {
+    return <Navigate to="/signin" replace />;
+  }
+
+  return children;
 }
 
 function Layout() {

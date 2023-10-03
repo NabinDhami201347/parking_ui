@@ -11,13 +11,15 @@ const Navbar = () => {
     <header className="fixed top-0 w-full backdrop-blur-sm  border-b border-gray-600 h-16">
       <nav className="w-11/12 mx-auto h-full flex items-center">
         <div className="w-full flex items-center justify-between">
-          <div className="">Pay Per Vue</div>
+          <div className="hover:underline text-lg font-semibold">
+            <Link to="/">Park Pay Vue</Link>
+          </div>
           <ul className="flex items-center gap-4">
             <Link to="/">
               <li className="hover:underline transition">Home</li>
             </Link>
             <Link to="/spots">
-              <li className="hover:underline transition">Spots</li>
+              <li className="hover:underline transition">Parking Available</li>
             </Link>
             {isLoggedIn ? (
               <>

@@ -50,12 +50,12 @@ const VehicleRegisterModal = () => {
     },
     onSuccess: () => {
       closeModal();
+
       toast.success("Vehicle registered successfully");
       queryClient.invalidateQueries("vehicles");
     },
     onError: (err) => {
-      closeModal();
-      toast.error(err.response.data.error);
+      // toast.error("License number is already registered");
       console.log("error while creating vehicle", err);
     },
   });
@@ -63,8 +63,6 @@ const VehicleRegisterModal = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     mutate(formData);
-
-    closeModal();
   };
 
   return (
@@ -123,7 +121,7 @@ const VehicleRegisterModal = () => {
                       <option value="bike">Bike</option>
                     </select>
 
-                    {error && <p className="text-red-500 ml-auto">{error}</p>}
+                    {error && <p className="text-red-500 ml-auto text-base">License number is already registered</p>}
 
                     <button
                       disabled={isLoading}

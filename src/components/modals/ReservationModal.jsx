@@ -80,8 +80,8 @@ const ReservationModal = ({ id }) => {
     },
     onSuccess: () => {
       closeModal();
-      toast.success("Reservation Successful");
       navigate("/profile");
+      toast.success("Reservation Successful");
     },
     onError: (err) => {
       toast.err("Error while reservation");

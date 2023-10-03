@@ -3,6 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useMutation } from "@tanstack/react-query";
 
 import { publicAxios } from "../api";
+import toast from "react-hot-toast";
 
 const Signup = () => {
   const navigate = useNavigate();
@@ -25,6 +26,7 @@ const Signup = () => {
       return publicAxios.post("/auth/register", data);
     },
     onSuccess: () => {
+      toast.success("Successfully registered");
       navigate("/signin");
     },
     onError: (err) => {
