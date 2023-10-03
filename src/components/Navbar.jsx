@@ -1,9 +1,10 @@
 import { Link } from "react-router-dom";
 
-import { useAccessToken } from "../hooks/useAccessToken";
+import { TokensContext } from "../hooks/useTokens";
+import { useContext } from "react";
 
 const Navbar = () => {
-  const { accessToken, deleteAccessToken } = useAccessToken();
+  const { accessToken, deleteTokens } = useContext(TokensContext);
   const isLoggedIn = accessToken ? true : false;
 
   return (
@@ -26,16 +27,13 @@ const Navbar = () => {
                 <Link to="/profile">
                   <li className="hover:underline transition">Profile</li>
                 </Link>
-                <button
-                  onClick={() => deleteAccessToken()}
-                  className="bg-zinc-700 px-4 py-1 hover:bg-zinc-800 rounded-md"
-                >
+                <button onClick={() => deleteTokens()} className="bg-zinc-700 px-4 py-1 hover:bg-zinc-800 rounded-md">
                   Sign out
                 </button>
               </>
             ) : (
-              <Link to="/signup">
-                <li className="hover:bg-zinc-700 transition px-4 py-1 bg-zinc-600 rounded-md">Signup</li>
+              <Link to="/signin">
+                <li className="hover:bg-zinc-700 transition px-4 py-1 bg-zinc-600 rounded-md">Sign in</li>
               </Link>
             )}
           </ul>

@@ -1,14 +1,13 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useMutation } from "@tanstack/react-query";
 
 import { publicAxios } from "../api";
-import { useAccessToken } from "../hooks/useAccessToken";
+import { TokensContext } from "../hooks/useTokens";
 
 const Signin = () => {
   const navigate = useNavigate();
-  const { updateAccessToken } = useAccessToken();
-
+  const { setTokens } = useContext(TokensContext);
   const [formData, setFormData] = useState({
     email: "",
     password: "",
@@ -27,7 +26,7 @@ const Signin = () => {
       return publicAxios.post("/auth/login", data);
     },
     onSuccess: (data) => {
-      updateAccessToken(data.data.accessToken);
+      setTokens(data.data.accessToken, data.data.refreshToken);
       navigate("/");
     },
     onError: (err) => {

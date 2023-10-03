@@ -39,7 +39,6 @@ const Profile = () => {
     <div className="w-11/12 mx-auto my-10 space-y-6">
       <h2 className="text-2xl">{user.name}</h2>
       {user.vehicles.length < 1 && user.reservations.length < 1 && <p className="text-rose-500">Nothing to render!!</p>}
-
       {user.vehicles.length > 0 && (
         <div className="grid sm:grid-cols-3 gap-10">
           <div
@@ -75,7 +74,11 @@ const Profile = () => {
       )}
 
       {/* Table showing reservations */}
-      {user.reservations.length > 0 && <ReservationsList reservations={user.reservations} />}
+      {user.reservations.length > 0 ? (
+        <ReservationsList reservations={user.reservations} />
+      ) : (
+        <p className="text-rose-500">No reservations yet</p>
+      )}
     </div>
   );
 };

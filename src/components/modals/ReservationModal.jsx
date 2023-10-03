@@ -3,12 +3,13 @@ import { Dialog, Transition } from "@headlessui/react";
 import { Fragment, useState } from "react";
 import Select from "react-select";
 import DatePicker from "react-datepicker";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import "react-datepicker/dist/react-datepicker.css";
 import { privateAxios } from "../../api";
 import Loading from "../Loading";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
+import { FaHammer } from "react-icons/fa";
 
 const dialogTransitionConfig = {
   enter: "ease-out duration-300",
@@ -29,7 +30,7 @@ const overlayTransitionConfig = {
 };
 
 // eslint-disable-next-line react/prop-types
-const ReservationModal = ({ id, vehicles }) => {
+const ReservationModal = ({ id }) => {
   const navigate = useNavigate();
   const [isOpen, setIsOpen] = useState(false);
   const closeModal = () => setIsOpen(false);
@@ -42,6 +43,22 @@ const ReservationModal = ({ id, vehicles }) => {
     endTime: null,
     arrivalTime: null,
   });
+
+  const fetchVehicle = async () => {
+    try {
+      const res = await privateAxios.get(`vehicles/u/p`);
+      return res.data.vehicles;
+    } catch (error) {
+      console.log("error while fetching vehicles", error);
+    }
+  };
+
+  const {
+    data: vehicles,
+    isError: isVehicleError,
+    error: vehicleError,
+    isLoading: isVehicleLoading,
+  } = useQuery(["vehicles"], fetchVehicle);
 
   const handleDateChange = (date, field) => {
     setFormData({
@@ -85,12 +102,24 @@ const ReservationModal = ({ id, vehicles }) => {
     }));
   }
 
-  if (isLoading) {
+  if (isLoading || isVehicleLoading) {
     return <Loading />;
   }
 
   if (isError) {
     return <span>Error: {error.message}</span>;
+  }
+  if (isVehicleError) {
+    return <span>Error: {vehicleError.message}</span>;
+  }
+
+  if (vehicles.length < 1) {
+    return (
+      <div className="flex items-center gap-4 px-4 py-2 bg-yellow-600">
+        <FaHammer className="h-8 w-8" />
+        <p className="text-xl text-white rounded-sm">Please register a vehicle first</p>
+      </div>
+    );
   }
 
   return (
