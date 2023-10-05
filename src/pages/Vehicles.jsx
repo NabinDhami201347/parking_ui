@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import { useQuery } from "@tanstack/react-query";
 import { RiMotorbikeFill } from "react-icons/ri";
 import { FaCarSide } from "react-icons/fa";
@@ -13,7 +14,8 @@ const Vehicles = () => {
       const res = await privateAxios.get(`vehicles/u/p`);
       return res.data.vehicles;
     } catch (error) {
-      console.log("error while fetching vehicles", error);
+      console.log("Error while fetching vehicles", error);
+      throw error; // Re-throw the error so React Query handles it
     }
   };
 
@@ -29,7 +31,7 @@ const Vehicles = () => {
 
   return (
     <div className="w-11/12 mx-auto my-6">
-      <div className="grid sm:grid-cols-4 gap-10 ">
+      <div className="grid sm:grid-cols-4 gap-10">
         {vehicles.map((v) => (
           <Vehicle key={v._id} id={v._id} model={v.model} licensePlate={v.licensePlate} vehicleType={v.vehicleType} />
         ))}
@@ -40,20 +42,45 @@ const Vehicles = () => {
   );
 };
 
-// eslint-disable-next-line react/prop-types
 function Vehicle({ model, licensePlate, vehicleType, id }) {
   const IconMap = {
     car: <FaCarSide className="h-20 w-20" />,
     bike: <RiMotorbikeFill className="h-20 w-20" />,
   };
 
+  const fetchReservations = async () => {
+    try {
+      const res = await privateAxios.get("/reservations"); // Adjust the API endpoint as needed
+      return res.data.reservations;
+    } catch (error) {
+      console.log("Error while fetching reservations", error);
+      throw error;
+    }
+  };
+
+  const { data: reservations, isError, error, isLoading } = useQuery(["reservations"], fetchReservations);
+
+  if (isLoading) {
+    return (
+      <div className="relative p-1 border px-4 h-36 overflow-hidden border-purple-600 rounded-md  transition-all"></div>
+    );
+  }
+
+  if (isError) {
+    return <span>Error: {error.message}</span>;
+  }
+
+  const vehicleNotInReservations =
+    !reservations || !reservations.some((reservation) => reservation?.vehicle?._id === id);
+
   return (
     <div className="relative p-1 border px-4 overflow-hidden border-purple-600 rounded-md cursor-pointer hover:border-purple-400 transition-all">
       {IconMap[vehicleType]}
       <h2 className="text-xl text-gray-300">{model}</h2>
       <p className="text-base text-gray-500">{licensePlate}</p>
-      <DeleteVehicleModal id={id} />
+      {vehicleNotInReservations && <DeleteVehicleModal id={id} />}
     </div>
   );
 }
+
 export default Vehicles;

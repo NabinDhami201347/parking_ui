@@ -40,16 +40,16 @@ function ReservationsList({ reservations }) {
           {reservations.map((reservation) => (
             <tr key={reservation._id}>
               <td className="px-6 py-4 flex items-center gap-4 whitespace-no-wrap capitalize">
-                {IconMap[reservation.vehicle.vehicleType]}
-                {reservation.vehicle.model}
+                {IconMap[reservation?.vehicle?.vehicleType] ?? IconMap["bike"]}
+                {reservation?.vehicle?.model ?? "Yamaha"}
               </td>
               <td className="px-6 py-4 whitespace-no-wrap">
                 {moment(reservation.startTime).format("D MMMM , h:mm A")}
               </td>
-              <td className="px-6 py-4 whitespace-no-wrap">{moment(reservation.endTime).format("D MMMM , h:mm A")}</td>
-              <td className="px-6 py-4 whitespace-no-wrap">{reservation.status}</td>
-              <td className="px-6 py-4 whitespace-no-wrap">${reservation.totalCost.toFixed(2)}</td>
-              <td className="px-6 py-4 whitespace-no-wrap">
+              <td className="px-6 whitespace-no-wrap">{moment(reservation.endTime).format("D MMMM , h:mm A")}</td>
+              <td className="px-6 whitespace-no-wrap">{reservation.status}</td>
+              <td className="px-6 whitespace-no-wrap">${reservation.totalCost.toFixed(2)}</td>
+              <td className="px-6 whitespace-no-wrap">
                 <DeleteReservationModal id={reservation._id} />
               </td>
             </tr>

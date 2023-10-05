@@ -19,7 +19,7 @@ const Navbar = () => {
               <li className="hover:underline transition">Home</li>
             </Link>
             <Link to="/spots">
-              <li className="hover:underline transition">Parking Available</li>
+              <li className="hover:underline transition">Parking Places</li>
             </Link>
             {isLoggedIn ? (
               <>

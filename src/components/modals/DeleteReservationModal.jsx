@@ -59,7 +59,7 @@ const DeleteReservationModal = ({ id }) => {
       <button
         type="button"
         onClick={openModal}
-        className="px-4 py-1 rounded-md  bg-red-600 hover:bg-red-700 transition-all ease-in-out mt-4"
+        className="px-4 py-1 rounded-md  bg-red-600 hover:bg-red-700 transition-all ease-in-out"
       >
         Delete
       </button>
