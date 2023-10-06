@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import { FaCar, FaMotorcycle } from "react-icons/fa";
 
 const Card = ({ total, vehicleType }) => {

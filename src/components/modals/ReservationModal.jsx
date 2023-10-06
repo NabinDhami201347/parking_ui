@@ -151,16 +151,7 @@ const ReservationModal = ({ id }) => {
                       options={vehicleOptions}
                       value={vehicleOptions.find((option) => option.value === formData.vehicleId)}
                       onChange={handleVehicleChange}
-                      className="border text-black "
-                      styles={{
-                        control: (provided) => ({
-                          ...provided,
-                          boxShadow: "none",
-                          border: "none",
-                          backgroundColor: "#18181B",
-                          color: "white",
-                        }),
-                      }}
+                      className="border text-black placeholder:text-white"
                     />
                     <label className="block">Start Time:</label>
                     <DatePicker

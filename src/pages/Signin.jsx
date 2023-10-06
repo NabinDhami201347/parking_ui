@@ -1,6 +1,7 @@
 import { useContext, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useMutation } from "@tanstack/react-query";
+import toast from "react-hot-toast";
 
 import { publicAxios } from "../api";
 import { TokensContext } from "../hooks/useTokens";
@@ -28,6 +29,7 @@ const Signin = () => {
     onSuccess: (data) => {
       setTokens(data.data.accessToken, data.data.refreshToken);
       navigate("/");
+      toast.success("Successfully logged in");
     },
     onError: (err) => {
       console.log("error while log in", err);
