@@ -12,6 +12,7 @@ import CreateVehicleForm from "./components/CreateVehicleForm";
 
 import { useContext } from "react";
 import { TokensContext } from "./hooks/useTokens";
+import Parking from "./pages/Parking";
 
 function App() {
   return (
@@ -33,6 +34,14 @@ function App() {
           element={
             <RequireAuth>
               <Vehicles />
+            </RequireAuth>
+          }
+        />
+        <Route
+          path="/parkings"
+          element={
+            <RequireAuth>
+              <Parking />
             </RequireAuth>
           }
         />

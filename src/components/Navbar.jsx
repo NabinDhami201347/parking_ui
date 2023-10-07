@@ -26,6 +26,9 @@ const Navbar = () => {
                 <Link to="/vehicles">
                   <li className="hover:underline transition">Vehicles</li>
                 </Link>
+                <Link to="/parkings">
+                  <li className="hover:underline transition">Parkings</li>
+                </Link>
                 <Link to="/profile">
                   <li className="hover:underline transition">Profile</li>
                 </Link>
